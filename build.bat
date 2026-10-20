@@ -5,12 +5,17 @@ cd /d "%~dp0"
 
 if not exist "out" mkdir "out"
 
-echo [BUILD] Compiling Java sources...
-javac -encoding UTF-8 -cp "lib/*" -d out (dir /s /b src\*.java)
+echo [BUILD] Finding Java source files...
+dir /s /b src\*.java > sources.txt
 
-if %ERRORLEVEL% NEQ 0 (
+echo [BUILD] Compiling Java sources...
+javac -encoding UTF-8 -cp "lib/*" -d out @sources.txt
+set COMPILE_STATUS=%ERRORLEVEL%
+del sources.txt
+
+if %COMPILE_STATUS% NEQ 0 (
     echo [ERROR] Compilation failed!
-    exit /b %ERRORLEVEL%
+    exit /b %COMPILE_STATUS%
 )
 
 echo [SUCCESS] Build succeeded!
