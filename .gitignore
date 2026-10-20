@@ -6,3 +6,6 @@ config/db.properties
 *.iml
 .DS_Store
 *.log
+BRIEF.md
+docs/RUBRIC_MAPPING.md
+docs/VIVA_NOTES.md

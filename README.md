@@ -11,13 +11,13 @@ $$\text{Donor Registration} \longrightarrow \text{Donation Intake (Pending)} \lo
 
 - **Backend-Enforced Business Rules:** All transactions, concurrency locks, stock invariants, and medical eligibility constraints are authoritatively enforced by database stored procedures, functions, and triggers. The Java application serves as a clean, responsive front end calling these procedures via JDBC.
 - **Role-Based Access Control:** Distinct workflows and interfaces for **System Administrators**, **Blood Bank Staff**, and **Hospital Representatives**.
-- **10-Mark College Mini-Project Rubric Compliance:** Strictly implements Object-Oriented Inheritance, Polymorphism, Collections Framework, Custom Exception Handling, PreparedStatement/CallableStatement JDBC CRUD, Swing GUI, and Multithreading.
+- **Robust Architecture:** Strictly implements Object-Oriented Inheritance, Polymorphism, Collections Framework, Custom Exception Handling, PreparedStatement/CallableStatement JDBC CRUD, Swing GUI, and Multithreading.
 
 ---
 
 ## 2. Prerequisites
 
-1. **Java Development Kit (JDK):** JDK 17 or higher (tested on OpenJDK 17 and OpenJDK 25).
+1. **Java Development Kit (JDK):** JDK 17 or higher (compatible with OpenJDK 17, 21, and 25).
 2. **MySQL Database Server:** MySQL Community Server 8.0.16+ (requires native SQL `CHECK` constraint enforcement).
 3. **MySQL Connector/J:** Included in `lib/mysql-connector-j-26.7.0.jar`.
 
@@ -25,7 +25,7 @@ $$\text{Donor Registration} \longrightarrow \text{Donation Intake (Pending)} \lo
 
 ## 3. Database Setup Instructions
 
-Follow these exact steps in MySQL Workbench or via the `mysql` CLI:
+Follow these steps in MySQL Workbench or via the `mysql` CLI:
 
 ### Step 1: Execute Database SQL Scripts in Order
 Execute the SQL scripts located in the `db/` directory in sequential order:
@@ -112,7 +112,7 @@ java -cp "out:lib/*" com.bloodbank.Main        # Linux/macOS
 
 ## 5. Demo Logins
 
-The database seed script (`db/06_seed_data.sql`) automatically provisions demo accounts with salted SHA-256 password hashes:
+The database seed script (`db/06_seed_data.sql`) automatically provisions accounts with salted SHA-256 password hashes:
 
 | Role | Username | Password | Organization / Linked Entity | Accessible Tabs |
 |---|---|---|---|---|
@@ -127,8 +127,7 @@ The database seed script (`db/06_seed_data.sql`) automatically provisions demo a
 
 ```
 BloodBankApp/
-├── BRIEF.md                    <- Project specification and rubrics
-├── README.md                   <- Setup, run instructions, and demo credentials
+├── README.md                   <- Setup, run instructions, and credentials
 ├── .gitignore                  <- Excludes compiled classes and private credentials
 ├── build.bat / build.sh        <- Automated compilation and launch scripts
 ├── config/
@@ -145,8 +144,6 @@ BloodBankApp/
 │   └── mysql-connector-j-26.7.0.jar <- MySQL JDBC driver
 ├── docs/
 │   ├── DESIGN.md               <- System architecture, roles, and Mermaid class diagrams
-│   ├── RUBRIC_MAPPING.md       <- 10-mark college rubric traceability matrix
-│   ├── VIVA_NOTES.md           <- Comprehensive viva questions and technical explanations
 │   └── screenshots/            <- UI demonstration screenshots
 └── src/com/bloodbank/
     ├── Main.java               <- Application startup entry point
