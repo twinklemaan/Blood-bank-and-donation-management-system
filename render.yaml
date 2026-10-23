@@ -1,0 +1,43 @@
+services:
+  # 1. Backend Web Service (Node.js + Express API)
+  - type: web
+    name: bloodbank-api
+    env: node
+    plan: free
+    rootDir: backend
+    buildCommand: npm ci
+    startCommand: node src/server.js
+    healthCheckPath: /api/health
+    envVars:
+      - key: PORT
+        value: 5000
+      - key: NODE_ENV
+        value: production
+      - key: MONGODB_URI
+        sync: false # Set manually in Render dashboard from MongoDB Atlas
+      - key: JWT_SECRET
+        sync: false # Set manually in Render dashboard
+      - key: CORS_ORIGIN
+        sync: false # Set to frontend URL after frontend is created
+
+  # 2. Frontend React Application (Vite Static Site)
+  - type: static_site
+    name: bloodbank-portal
+    plan: free
+    rootDir: frontend
+    buildCommand: npm ci && npm run build
+    publishDir: dist
+    routes:
+      - type: rewrite
+        source: /*
+        destination: /index.html
+    envVars:
+      - key: VITE_API_URL
+        sync: false # Set to the Render backend URL (e.g. https://bloodbank-api.onrender.com)
+
+  # 3. Static Site (HTML5/CSS3/DOM Site)
+  - type: static_site
+    name: bloodbank-static
+    plan: free
+    rootDir: static-site
+    publishDir: .
