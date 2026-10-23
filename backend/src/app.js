@@ -6,6 +6,8 @@ const path = require('path');
 const authRoutes = require('./routes/auth');
 const donorRoutes = require('./routes/donors');
 const donationRoutes = require('./routes/donations');
+const requestRoutes = require('./routes/requests');
+const stockRoutes = require('./routes/stock');
 
 const app = express();
 
@@ -30,6 +32,8 @@ app.get('/api/health', (req, res) => {
 app.use('/api/auth', authRoutes);
 app.use('/api/donors', donorRoutes);
 app.use('/api/donations', donationRoutes);
+app.use('/api/requests', requestRoutes);
+app.use('/api', stockRoutes);
 
 // 404 Handler for unmatched routes
 app.use((req, res) => {
