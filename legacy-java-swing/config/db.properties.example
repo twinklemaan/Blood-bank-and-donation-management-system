@@ -1,6 +1,0 @@
-db.url=jdbc:mysql://localhost:3306/blood_bank_db_er?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=Asia/Kolkata
-db.user=YOUR_USER
-db.password=YOUR_PASSWORD
-stock.low.threshold=5
-monitor.interval.seconds=10
-demo.hold.seconds=0
