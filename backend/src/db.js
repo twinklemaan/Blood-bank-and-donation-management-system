@@ -1,4 +1,10 @@
 // db.js - MongoDB connection setup using Mongoose (Unit 4: Database connectivity)
+const dns = require('dns');
+// Set robust public DNS servers to resolve MongoDB Atlas SRV records on Windows
+try {
+  dns.setServers(['8.8.8.8', '1.1.1.1']);
+} catch (e) {}
+
 const mongoose = require('mongoose');
 
 async function connectDB() {

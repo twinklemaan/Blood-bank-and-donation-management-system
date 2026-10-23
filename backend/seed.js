@@ -1,5 +1,11 @@
 // seed.js - Database Seeding Script (Unit 4: MongoDB Atlas / Local Provisioning)
 require('dotenv').config();
+const dns = require('dns');
+// Set robust public DNS servers to resolve MongoDB Atlas SRV records on Windows
+try {
+  dns.setServers(['8.8.8.8', '1.1.1.1']);
+} catch (e) {}
+
 const mongoose = require('mongoose');
 const bcrypt = require('bcryptjs');
 const User = require('./src/models/User');
@@ -16,7 +22,7 @@ async function seed() {
     process.exit(1);
   }
 
-  console.log('Connecting to MongoDB database for seeding...');
+  console.log('Connecting to MongoDB Atlas database for seeding...');
   await mongoose.connect(uri);
 
   console.log('Clearing existing database collections...');
@@ -145,7 +151,7 @@ async function seed() {
     // Mumbai Bank Donations
     { donorIndex: 3, bankId: bank2._id, date: pastDate12Days, units: 2, hb: 13.0, screening: 'Pass' },
     { donorIndex: 4, bankId: bank2._id, date: pastDate5Days, units: 2, hb: 15.1, screening: 'Pass' },
-    { donorIndex: 3, bankId: bank2._id, date: now, units: 1, hb: 12.0, screening: 'Fail' }, // Screened as Fail
+    { donorIndex: 3, bankId: bank2._id, date: now, units: 1, hb: 12.0, screening: 'Fail' },
     { donorIndex: 4, bankId: bank2._id, date: now, units: 2, hb: 14.4, screening: 'Pass' },
   ];
 
@@ -175,7 +181,7 @@ async function seed() {
     unitsRequested: 1,
     urgency: 'Critical',
     status: 'Pending',
-    requestDate: new Date(now.getTime() - 2 * 60 * 60 * 1000), // 2 hrs ago
+    requestDate: new Date(now.getTime() - 2 * 60 * 60 * 1000),
     issues: [],
   });
 
@@ -186,7 +192,7 @@ async function seed() {
     unitsRequested: 2,
     urgency: 'Normal',
     status: 'Pending',
-    requestDate: new Date(now.getTime() - 1 * 60 * 60 * 1000), // 1 hr ago
+    requestDate: new Date(now.getTime() - 1 * 60 * 60 * 1000),
     issues: [],
   });
 
@@ -202,7 +208,7 @@ async function seed() {
   console.log('==============================================');
 
   await mongoose.disconnect();
-  console.log('Seed completed successfully.');
+  console.log('Atlas Seed completed successfully.');
 }
 
 seed().catch((err) => {
