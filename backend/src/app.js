@@ -11,9 +11,13 @@ const stockRoutes = require('./routes/stock');
 
 const app = express();
 
-// Middleware
-const allowedOrigin = process.env.CORS_ORIGIN || '*';
-app.use(cors({ origin: allowedOrigin, credentials: true }));
+// Middleware: Enable permissive CORS with credentials for local dev and cloud deployment
+app.use(
+  cors({
+    origin: (origin, callback) => callback(null, true),
+    credentials: true,
+  })
+);
 app.use(express.json());
 
 // Serve uploaded laboratory report files statically
