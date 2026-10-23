@@ -1,9 +1,12 @@
 // routes/donations.js - Donation Intake & Screening Workflow (Unit 4 & 6)
 const express = require('express');
 const { body, validationResult } = require('express-validator');
+const fs = require('fs');
+const path = require('path');
 const Donation = require('../models/Donation');
 const Donor = require('../models/Donor');
 const { authenticate, allow } = require('../middleware/auth');
+const upload = require('../middleware/upload');
 const rules = require('../rules');
 
 const router = express.Router();
@@ -171,5 +174,59 @@ router.patch(
     }
   }
 );
+
+/**
+ * POST /api/donations/:id/report
+ * Staff: Upload a lab test report (PDF/PNG/JPG, max 2MB)
+ * Deletes old report if replacing an existing one (SYLLABUS CONCEPT: fs.unlink)
+ */
+router.post('/:id/report', upload.single('report'), async (req, res) => {
+  try {
+    const donation = await Donation.findById(req.params.id);
+    if (!donation) {
+      // If upload happened but donation not found, clean up uploaded file
+      if (req.file) {
+        fs.unlink(req.file.path, () => {});
+      }
+      return res.status(404).json({ message: 'Donation not found' });
+    }
+
+    if (donation.bankId.toString() !== req.user.bankId.toString()) {
+      if (req.file) {
+        fs.unlink(req.file.path, () => {});
+      }
+      return res.status(403).json({ message: 'Forbidden: Cannot upload reports for another bank' });
+    }
+
+    if (!req.file) {
+      return res.status(400).json({ message: 'Please upload a lab report file' });
+    }
+
+    // If donation already has an existing report file, remove it using fs.unlink
+    if (donation.reportFile) {
+      const oldFilePath = path.join(__dirname, '../../uploads', donation.reportFile);
+      fs.unlink(oldFilePath, (err) => {
+        if (err && err.code !== 'ENOENT') {
+          console.warn('Could not delete old report file:', err.message);
+        }
+      });
+    }
+
+    // Save filename in database
+    donation.reportFile = req.file.filename;
+    await donation.save();
+
+    return res.json({
+      message: 'Lab report uploaded successfully',
+      reportFile: donation.reportFile,
+      downloadUrl: `/uploads/${donation.reportFile}`,
+    });
+  } catch (err) {
+    if (req.file) {
+      fs.unlink(req.file.path, () => {});
+    }
+    return res.status(500).json({ message: err.message });
+  }
+});
 
 module.exports = router;

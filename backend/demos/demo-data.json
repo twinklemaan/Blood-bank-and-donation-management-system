@@ -1,0 +1,10 @@
+[
+  { "bloodGroup": "A+", "units": 15 },
+  { "bloodGroup": "A-", "units": 6 },
+  { "bloodGroup": "B+", "units": 22 },
+  { "bloodGroup": "B-", "units": 4 },
+  { "bloodGroup": "AB+", "units": 9 },
+  { "bloodGroup": "AB-", "units": 2 },
+  { "bloodGroup": "O+", "units": 35 },
+  { "bloodGroup": "O-", "units": 8 }
+]
