@@ -1,6 +1,6 @@
 // App.jsx - Main Application Component & Client Routing (React Router)
 import React from 'react';
-import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
+import { HashRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { AuthProvider, useAuth } from './context/AuthContext';
 import Navbar from './components/Navbar';
 import ProtectedRoute from './components/ProtectedRoute';
@@ -30,7 +30,7 @@ function RootRedirect() {
 export default function App() {
   return (
     <AuthProvider>
-      <BrowserRouter>
+      <HashRouter>
         <div className="app-container">
           <Navbar />
           <main className="main-content">
@@ -109,7 +109,7 @@ export default function App() {
             </ErrorBoundary>
           </main>
         </div>
-      </BrowserRouter>
+      </HashRouter>
     </AuthProvider>
   );
 }
