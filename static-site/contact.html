@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Contact Us - Blood Bank Portal</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <header>
+    <nav class="navbar">
+      <a href="index.html" class="brand">🩸 BloodBank Portal</a>
+      <button class="menu-toggle" id="menuToggle" aria-label="Toggle navigation">☰</button>
+      <ul class="nav-links" id="navLinks">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="about.html">Eligibility</a></li>
+        <li><a href="donate.html">Donate Now</a></li>
+        <li><a href="contact.html" class="active">Contact Us</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <main>
+    <section>
+      <h1 class="section-title">Get in Touch</h1>
+      <p style="text-align: center; margin-bottom: 2rem; color: #555;">
+        Have queries regarding blood donation, emergency dispatch, or camp organization? Send us a message.
+      </p>
+
+      <div class="form-card">
+        <div id="contactSuccess" class="success-banner" role="alert">
+          <strong>Message Received!</strong> Our central operations desk will respond to your inquiry shortly.
+        </div>
+
+        <form id="contactForm" novalidate>
+          <div class="form-group">
+            <label for="cName">Your Name *</label>
+            <input type="text" id="cName" class="form-control" required placeholder="e.g. Dr. Ananya Sen">
+            <span class="error-text" id="cNameError">Please enter your name.</span>
+          </div>
+
+          <div class="form-group">
+            <label for="cEmail">Email Address *</label>
+            <input type="email" id="cEmail" class="form-control" required placeholder="ananya@hospital.org">
+            <span class="error-text" id="cEmailError">Please enter a valid email address.</span>
+          </div>
+
+          <div class="form-group">
+            <label for="cSubject">Subject *</label>
+            <input type="text" id="cSubject" class="form-control" required placeholder="e.g. Urgent blood availability enquiry">
+            <span class="error-text" id="cSubError">Subject is required.</span>
+          </div>
+
+          <div class="form-group">
+            <label for="cMessage">Message *</label>
+            <textarea id="cMessage" class="form-control" rows="4" required placeholder="Type your message here..."></textarea>
+            <span class="error-text" id="cMsgError">Message must be at least 10 characters.</span>
+          </div>
+
+          <button type="submit" class="btn btn-primary" style="width: 100%;">Send Inquiry</button>
+        </form>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <p>&copy; 2026 Blood Bank Management System. Built for Course Viva Demonstration.</p>
+  </footer>
+
+  <script src="js/validate.js"></script>
+  <script src="js/main.js"></script>
+  <script>
+    const cForm = document.getElementById('contactForm');
+    const cSuccess = document.getElementById('contactSuccess');
+
+    cForm.addEventListener('submit', (e) => {
+      e.preventDefault();
+
+      const name = sanitize(document.getElementById('cName').value);
+      const email = sanitize(document.getElementById('cEmail').value);
+      const subject = sanitize(document.getElementById('cSubject').value);
+      const message = sanitize(document.getElementById('cMessage').value);
+
+      let valid = true;
+
+      if (!name) {
+        document.getElementById('cNameError').style.display = 'block';
+        valid = false;
+      } else {
+        document.getElementById('cNameError').style.display = 'none';
+      }
+
+      if (!validateEmail(email)) {
+        document.getElementById('cEmailError').style.display = 'block';
+        valid = false;
+      } else {
+        document.getElementById('cEmailError').style.display = 'none';
+      }
+
+      if (!subject) {
+        document.getElementById('cSubError').style.display = 'block';
+        valid = false;
+      } else {
+        document.getElementById('cSubError').style.display = 'none';
+      }
+
+      if (message.length < 10) {
+        document.getElementById('cMsgError').style.display = 'block';
+        valid = false;
+      } else {
+        document.getElementById('cMsgError').style.display = 'none';
+      }
+
+      if (!valid) return;
+
+      cSuccess.style.display = 'block';
+      cForm.reset();
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+  </script>
+</body>
+</html>

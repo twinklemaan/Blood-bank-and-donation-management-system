@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Blood Bank Management System</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <!-- Header & Navigation (Unit 1 Semantic HTML, Unit 2 Flexbox) -->
+  <header>
+    <nav class="navbar">
+      <a href="index.html" class="brand">🩸 BloodBank Portal</a>
+      <button class="menu-toggle" id="menuToggle" aria-label="Toggle navigation">☰</button>
+      <ul class="nav-links" id="navLinks">
+        <li><a href="index.html" class="active">Home</a></li>
+        <li><a href="about.html">Eligibility</a></li>
+        <li><a href="donate.html">Donate Now</a></li>
+        <li><a href="contact.html">Contact Us</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <!-- Main Content Container -->
+  <main>
+    <!-- Hero Section -->
+    <section class="hero">
+      <h1>Give the Gift of Life: Donate Blood</h1>
+      <p>Every donation can save up to three lives. Discover live blood availability, check donor eligibility, and join our lifesaving community today.</p>
+      <a href="donate.html" class="btn">Register as Donor</a>
+    </section>
+
+    <!-- 3 Featured Cards (CSS Grid) -->
+    <section>
+      <h2 class="section-title">Our Services</h2>
+      <div class="card-grid">
+        <article class="card">
+          <h3>🩺 Safe Voluntary Donation</h3>
+          <p>Donations are supervised by medical professionals adhering strictly to international safety and screening protocols.</p>
+        </article>
+        <article class="card">
+          <h3>⚡ First-Expiry-First-Out (FEFO)</h3>
+          <p>Inventory is automatically allocated based on shelf life to minimize wastage and guarantee optimal blood freshness.</p>
+        </article>
+        <article class="card">
+          <h3>🏥 Hospital Urgent Dispatch</h3>
+          <p>Registered medical centers can search real-time cross-bank availability and request prioritized blood dispatches.</p>
+        </article>
+      </div>
+    </section>
+
+    <!-- Live Public Stock Section (Populated via DOM createElement & textContent) -->
+    <section>
+      <h2 class="section-title">Live Blood Stock Inventory</h2>
+      <p style="text-align: center; color: #666; margin-bottom: 1rem;">Real-time units available across all certified blood banks.</p>
+      <div class="stock-grid" id="liveStockContainer">
+        <p style="text-align: center; grid-column: 1 / -1; color: #888;">Loading real-time stock data...</p>
+      </div>
+    </section>
+  </main>
+
+  <!-- Footer (Unit 1 Semantic HTML & Flexbox) -->
+  <footer>
+    <p>&copy; 2026 Blood Bank Management System. Built for Course Viva Demonstration.</p>
+  </footer>
+
+  <script src="js/validate.js"></script>
+  <script src="js/main.js"></script>
+</body>
+</html>

@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Donor Eligibility - Blood Bank Portal</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <header>
+    <nav class="navbar">
+      <a href="index.html" class="brand">🩸 BloodBank Portal</a>
+      <button class="menu-toggle" id="menuToggle" aria-label="Toggle navigation">☰</button>
+      <ul class="nav-links" id="navLinks">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="about.html" class="active">Eligibility</a></li>
+        <li><a href="donate.html">Donate Now</a></li>
+        <li><a href="contact.html">Contact Us</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <main>
+    <section>
+      <h1 class="section-title">Blood Donation Eligibility & Medical Guidelines</h1>
+      <p style="text-align: center; max-width: 750px; margin: 0 auto 2rem; color: #555;">
+        Before donating, please review the safety and medical criteria enforced by our system. These parameters protect both the generous donor and the recipient patient.
+      </p>
+
+      <!-- Eligibility Criteria Table (Unit 1: Semantic Table Elements) -->
+      <div class="table-responsive">
+        <table>
+          <thead>
+            <tr>
+              <th>Parameter</th>
+              <th>Requirement</th>
+              <th>Rationale / Medical Rule</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>Age</strong></td>
+              <td>18 to 65 years</td>
+              <td>Must be an adult of legal consent with safe physiological donor capacity.</td>
+            </tr>
+            <tr>
+              <td><strong>Hemoglobin (Hb)</strong></td>
+              <td>≥ 12.5 g/dL</td>
+              <td>Prevents post-donation donor fatigue and ensures potent packed red blood cells.</td>
+            </tr>
+            <tr>
+              <td><strong>Donation Interval</strong></td>
+              <td>Minimum 90 days</td>
+              <td>Enables complete replenishment of iron reserves and red cell mass before next intake.</td>
+            </tr>
+            <tr>
+              <td><strong>Donation Shelf Life</strong></td>
+              <td>35 Days Maximum</td>
+              <td>Whole blood units expire automatically 35 days post collection to ensure patient safety.</td>
+            </tr>
+            <tr>
+              <td><strong>Screening State</strong></td>
+              <td>Mandatory Pass</td>
+              <td>Units undergo infectious screening (HIV, Hepatitis, Syphilis). Only Pass units enter inventory.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div style="margin-top: 2.5rem; text-align: center;">
+        <p style="margin-bottom: 1rem; font-weight: 600;">Meet the criteria and feel ready to contribute?</p>
+        <a href="donate.html" class="btn btn-primary">Proceed to Donor Registration</a>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <p>&copy; 2026 Blood Bank Management System. Built for Course Viva Demonstration.</p>
+  </footer>
+
+  <script src="js/main.js"></script>
+</body>
+</html>

@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Register as Donor - Blood Bank Portal</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <header>
+    <nav class="navbar">
+      <a href="index.html" class="brand">🩸 BloodBank Portal</a>
+      <button class="menu-toggle" id="menuToggle" aria-label="Toggle navigation">☰</button>
+      <ul class="nav-links" id="navLinks">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="about.html">Eligibility</a></li>
+        <li><a href="donate.html" class="active">Donate Now</a></li>
+        <li><a href="contact.html">Contact Us</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <main>
+    <section>
+      <h1 class="section-title">Donor Registration Form</h1>
+      <p style="text-align: center; margin-bottom: 2rem; color: #555;">
+        Join our voluntary donor registry. Fill in your details below.
+      </p>
+
+      <div class="form-card">
+        <!-- Success Message Banner -->
+        <div id="successBanner" class="success-banner" role="alert">
+          <strong>Thank you!</strong> Your voluntary donor profile has been validated and recorded. A local blood bank representative will contact you for your next intake appointment.
+        </div>
+
+        <!-- SYLLABUS CONCEPT (Unit 1): Native HTML Form Validation using attributes -->
+        <!-- required, pattern, min, max, type="email", type="tel", type="date" -->
+        <form id="donorForm" novalidate>
+          <div class="form-group">
+            <label for="fullName">Full Name *</label>
+            <input
+              type="text"
+              id="fullName"
+              name="fullName"
+              class="form-control"
+              required
+              minlength="3"
+              maxlength="50"
+              pattern="^[A-Za-z ]{3,50}$"
+              title="Name must only contain letters and spaces (3-50 chars)"
+              placeholder="e.g. Ramesh Kumar"
+            >
+            <span class="error-text" id="nameError">Please enter a valid full name (letters only).</span>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label for="email">Email Address *</label>
+              <input
+                type="email"
+                id="email"
+                name="email"
+                class="form-control"
+                required
+                placeholder="name@example.com"
+              >
+              <span class="error-text" id="emailError">Please enter a valid email address.</span>
+            </div>
+
+            <div class="form-group">
+              <label for="phone">Mobile Phone (10 digits) *</label>
+              <input
+                type="tel"
+                id="phone"
+                name="phone"
+                class="form-control"
+                required
+                pattern="^[6-9]\d{9}$"
+                title="10-digit phone number starting with 6, 7, 8, or 9"
+                placeholder="e.g. 9822012345"
+              >
+              <span class="error-text" id="phoneError">Phone number must be 10 digits starting with 6-9.</span>
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label for="dob">Date of Birth (18-65 years) *</label>
+              <input
+                type="date"
+                id="dob"
+                name="dob"
+                class="form-control"
+                required
+                min="1959-01-01"
+                max="2006-12-31"
+              >
+              <span class="error-text" id="dobError">Donor must be between 18 and 65 years old.</span>
+            </div>
+
+            <div class="form-group">
+              <label for="bloodGroup">Blood Group *</label>
+              <select id="bloodGroup" name="bloodGroup" class="form-control" required>
+                <option value="">-- Select Blood Group --</option>
+                <option value="A+">A+</option>
+                <option value="A-">A-</option>
+                <option value="B+">B+</option>
+                <option value="B-">B-</option>
+                <option value="AB+">AB+</option>
+                <option value="AB-">AB-</option>
+                <option value="O+">O+</option>
+                <option value="O-">O-</option>
+              </select>
+              <span class="error-text" id="groupError">Please select your blood group.</span>
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label for="city">City *</label>
+              <input
+                type="text"
+                id="city"
+                name="city"
+                class="form-control"
+                required
+                pattern="^[A-Za-z ]{2,30}$"
+                placeholder="e.g. Pune"
+              >
+              <span class="error-text" id="cityError">City name is required (letters only).</span>
+            </div>
+
+            <div class="form-group">
+              <label for="pincode">Postal Pincode (6 digits) *</label>
+              <input
+                type="text"
+                id="pincode"
+                name="pincode"
+                class="form-control"
+                required
+                pattern="^\d{6}$"
+                maxlength="6"
+                placeholder="e.g. 411001"
+              >
+              <span class="error-text" id="pincodeError">Pincode must be exactly 6 digits.</span>
+            </div>
+          </div>
+
+          <button type="submit" class="btn btn-primary" style="width: 100%; margin-top: 1rem;">Submit Registration</button>
+        </form>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <p>&copy; 2026 Blood Bank Management System. Built for Course Viva Demonstration.</p>
+  </footer>
+
+  <script src="js/validate.js"></script>
+  <script src="js/main.js"></script>
+  <script>
+    // SYLLABUS CONCEPT (Unit 3): Secure Validation, Regular Expressions & Sanitization
+    const form = document.getElementById('donorForm');
+    const successBanner = document.getElementById('successBanner');
+
+    form.addEventListener('submit', (e) => {
+      e.preventDefault();
+
+      // Retrieve and sanitize inputs
+      const name = sanitize(document.getElementById('fullName').value);
+      const email = sanitize(document.getElementById('email').value);
+      const phone = sanitize(document.getElementById('phone').value);
+      const dob = sanitize(document.getElementById('dob').value);
+      const bloodGroup = sanitize(document.getElementById('bloodGroup').value);
+      const city = sanitize(document.getElementById('city').value);
+      const pincode = sanitize(document.getElementById('pincode').value);
+
+      let isValid = true;
+
+      // Validate Email via RegExp
+      if (!validateEmail(email)) {
+        document.getElementById('emailError').style.display = 'block';
+        isValid = false;
+      } else {
+        document.getElementById('emailError').style.display = 'none';
+      }
+
+      // Validate Phone via RegExp
+      if (!validatePhone(phone)) {
+        document.getElementById('phoneError').style.display = 'block';
+        isValid = false;
+      } else {
+        document.getElementById('phoneError').style.display = 'none';
+      }
+
+      // Validate Pincode via RegExp
+      if (!validatePincode(pincode)) {
+        document.getElementById('pincodeError').style.display = 'block';
+        isValid = false;
+      } else {
+        document.getElementById('pincodeError').style.display = 'none';
+      }
+
+      // Validate Age (18-65)
+      if (dob) {
+        const birthDate = new Date(dob);
+        const today = new Date();
+        let age = today.getFullYear() - birthDate.getFullYear();
+        const m = today.getMonth() - birthDate.getMonth();
+        if (m < 0 || (m === 0 && today.getDate() < birthDate.getDate())) age--;
+        if (age < 18 || age > 65) {
+          document.getElementById('dobError').style.display = 'block';
+          isValid = false;
+        } else {
+          document.getElementById('dobError').style.display = 'none';
+        }
+      } else {
+        document.getElementById('dobError').style.display = 'block';
+        isValid = false;
+      }
+
+      if (!isValid) return;
+
+      // Show success message and clear form safely
+      successBanner.style.display = 'block';
+      form.reset();
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+  </script>
+</body>
+</html>
