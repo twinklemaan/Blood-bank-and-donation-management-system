@@ -1,0 +1,507 @@
+{
+  "info": {
+    "name": "Blood Bank Management API",
+    "_postman_id": "9a38f32a-5f56-4c47-b8d2-4361e27a6f01",
+    "description": "Postman test collection covering Auth, Staff, Hospital workflows, and 4 required syllabus negative test constraints.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Auth",
+      "item": [
+        {
+          "name": "1. Hospital Register",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"username\": \"jupiter_hosp\",\n  \"password\": \"jupiter123\",\n  \"name\": \"Jupiter Hospital\",\n  \"city\": \"Pune\"\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/api/auth/register", "host": ["{{baseUrl}}"], "path": ["api", "auth", "register"] }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status is 201 Created or 409 Conflict', function () {",
+                  "    pm.expect([201, 409]).to.include(pm.response.code);",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "2. Login Staff (Pune)",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"username\": \"staff1\",\n  \"password\": \"staff123\"\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/api/auth/login", "host": ["{{baseUrl}}"], "path": ["api", "auth", "login"] }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status is 200 OK', function () { pm.response.to.have.status(200); });",
+                  "var data = pm.response.json();",
+                  "pm.environment.set('staffToken', data.token);",
+                  "pm.environment.set('bankPuneId', data.user.bankId);",
+                  "pm.test('Has JWT token', function () { pm.expect(data.token).to.be.a('string'); });"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "3. Login Hospital (Ruby Hall)",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"username\": \"hosp1\",\n  \"password\": \"hosp123\"\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/api/auth/login", "host": ["{{baseUrl}}"], "path": ["api", "auth", "login"] }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status is 200 OK', function () { pm.response.to.have.status(200); });",
+                  "var data = pm.response.json();",
+                  "pm.environment.set('hospToken', data.token);",
+                  "pm.test('Role is HOSPITAL', function () { pm.expect(data.user.role).to.eql('HOSPITAL'); });"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "4. Login Staff (Mumbai)",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"username\": \"staff2\",\n  \"password\": \"staff123\"\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/api/auth/login", "host": ["{{baseUrl}}"], "path": ["api", "auth", "login"] }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status is 200 OK', function () { pm.response.to.have.status(200); });",
+                  "var data = pm.response.json();",
+                  "pm.environment.set('staffMumbaiToken', data.token);",
+                  "pm.test('Role is STAFF', function () { pm.expect(data.user.role).to.eql('STAFF'); });"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Staff",
+      "item": [
+        {
+          "name": "1. Add Donor",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{staffToken}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Kunal Deshpande\",\n  \"gender\": \"Male\",\n  \"dob\": \"1997-03-21\",\n  \"bloodGroup\": \"O+\",\n  \"phones\": [\"9822998877\"],\n  \"address\": {\n    \"city\": \"Pune\",\n    \"pincode\": \"411030\"\n  }\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/api/donors", "host": ["{{baseUrl}}"], "path": ["api", "donors"] }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status is 201 Created', function () { pm.response.to.have.status(201); });",
+                  "var data = pm.response.json();",
+                  "pm.environment.set('donorId', data._id);",
+                  "pm.test('Donor ID returned', function () { pm.expect(data._id).to.be.a('string'); });"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "2. Get Donors",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{staffToken}}" }],
+            "url": { "raw": "{{baseUrl}}/api/donors", "host": ["{{baseUrl}}"], "path": ["api", "donors"] }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status is 200 OK', function () { pm.response.to.have.status(200); });",
+                  "pm.test('Returns donor array', function () { pm.expect(pm.response.json()).to.be.an('array'); });"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "3. Check Donor Eligibility",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{staffToken}}" }],
+            "url": { "raw": "{{baseUrl}}/api/donors/{{donorId}}/eligibility", "host": ["{{baseUrl}}"], "path": ["api", "donors", "{{donorId}}", "eligibility"] }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status is 200 OK', function () { pm.response.to.have.status(200); });",
+                  "pm.test('Donor is eligible', function () { pm.expect(pm.response.json().eligible).to.eql(true); });"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "4. Record Donation",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{staffToken}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"donorId\": \"{{donorId}}\",\n  \"units\": 2,\n  \"hemoglobin\": 14.2\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/api/donations", "host": ["{{baseUrl}}"], "path": ["api", "donations"] }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status is 201 Created', function () { pm.response.to.have.status(201); });",
+                  "var data = pm.response.json();",
+                  "pm.environment.set('donationId', data._id);",
+                  "pm.test('Screening starts as Pending', function () { pm.expect(data.screeningResult).to.eql('Pending'); });"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "5. Screen Pass",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{staffToken}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"result\": \"Pass\"\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/api/donations/{{donationId}}/screening", "host": ["{{baseUrl}}"], "path": ["api", "donations", "{{donationId}}", "screening"] }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status is 200 OK', function () { pm.response.to.have.status(200); });",
+                  "pm.test('Result transitioned to Pass', function () { pm.expect(pm.response.json().screeningResult).to.eql('Pass'); });"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "6. View Stock (Own Bank)",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{staffToken}}" }],
+            "url": { "raw": "{{baseUrl}}/api/stock", "host": ["{{baseUrl}}"], "path": ["api", "stock"] }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status is 200 OK', function () { pm.response.to.have.status(200); });",
+                  "pm.test('Has 8 blood groups', function () { pm.expect(pm.response.json().length).to.eql(8); });"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "7. View Requests To Fulfil",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{staffToken}}" }],
+            "url": { "raw": "{{baseUrl}}/api/requests/to-fulfil", "host": ["{{baseUrl}}"], "path": ["api", "requests", "to-fulfil"] }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status is 200 OK', function () { pm.response.to.have.status(200); });",
+                  "pm.test('Returns array of pending requests', function () { pm.expect(pm.response.json()).to.be.an('array'); });"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "8. Fulfil Request (FEFO)",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Authorization", "value": "Bearer {{staffToken}}" }],
+            "url": { "raw": "{{baseUrl}}/api/requests/{{requestId}}/fulfil", "host": ["{{baseUrl}}"], "path": ["api", "requests", "{{requestId}}", "fulfil"] }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status is 200 OK', function () { pm.response.to.have.status(200); });",
+                  "pm.test('Status is Fulfilled', function () { pm.expect(pm.response.json().request.status).to.eql('Fulfilled'); });"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "9. Verify Stock Decreased",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{staffToken}}" }],
+            "url": { "raw": "{{baseUrl}}/api/stock", "host": ["{{baseUrl}}"], "path": ["api", "stock"] }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status is 200 OK', function () { pm.response.to.have.status(200); });"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Hospital",
+      "item": [
+        {
+          "name": "1. Public Stock View",
+          "request": {
+            "method": "GET",
+            "url": { "raw": "{{baseUrl}}/api/public/stock", "host": ["{{baseUrl}}"], "path": ["api", "public", "stock"] }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status is 200 OK', function () { pm.response.to.have.status(200); });",
+                  "pm.test('Returns 8 blood groups', function () { pm.expect(pm.response.json().length).to.eql(8); });"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "2. Availability Search",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{hospToken}}" }],
+            "url": {
+              "raw": "{{baseUrl}}/api/availability?bloodGroup=O%2B&city=Pune",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "availability"],
+              "query": [
+                { "key": "bloodGroup", "value": "O+" },
+                { "key": "city", "value": "Pune" }
+              ]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status is 200 OK', function () { pm.response.to.have.status(200); });",
+                  "pm.test('Results contain Pune bank', function () { pm.expect(pm.response.json()[0].city).to.eql('Pune'); });"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "3. Raise Blood Request",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{hospToken}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"bankId\": \"{{bankPuneId}}\",\n  \"bloodGroup\": \"O+\",\n  \"unitsRequested\": 1,\n  \"urgency\": \"Critical\"\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/api/requests", "host": ["{{baseUrl}}"], "path": ["api", "requests"] }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status is 201 Created', function () { pm.response.to.have.status(201); });",
+                  "var data = pm.response.json();",
+                  "pm.environment.set('requestId', data._id);",
+                  "pm.test('Request is Pending', function () { pm.expect(data.status).to.eql('Pending'); });"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "4. View My Requests",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{hospToken}}" }],
+            "url": { "raw": "{{baseUrl}}/api/requests/mine", "host": ["{{baseUrl}}"], "path": ["api", "requests", "mine"] }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status is 200 OK', function () { pm.response.to.have.status(200); });",
+                  "pm.test('List contains user requests', function () { pm.expect(pm.response.json()).to.be.an('array'); });"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Negative Tests",
+      "item": [
+        {
+          "name": "1. Underage Donor Rejection (<18)",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{staffToken}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Minor Child\",\n  \"gender\": \"Male\",\n  \"dob\": \"2015-01-01\",\n  \"bloodGroup\": \"A+\",\n  \"phones\": [\"9999999999\"],\n  \"address\": { \"city\": \"Pune\", \"pincode\": \"411001\" }\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/api/donors", "host": ["{{baseUrl}}"], "path": ["api", "donors"] }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status is 400 Bad Request', function () { pm.response.to.have.status(400); });",
+                  "pm.test('Error cites age rule', function () { pm.expect(pm.response.json().message).to.include('aged 18-65'); });"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "2. Low Hemoglobin Deferral (<12.5)",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{staffToken}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"donorId\": \"{{donorId}}\",\n  \"units\": 1,\n  \"hemoglobin\": 12.0\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/api/donations", "host": ["{{baseUrl}}"], "path": ["api", "donations"] }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status is 400 Bad Request', function () { pm.response.to.have.status(400); });",
+                  "pm.test('Error cites Hb deferral', function () { pm.expect(pm.response.json().message).to.include('below 12.5'); });"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "3. Fulfil as Wrong Bank Staff Rejection",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Authorization", "value": "Bearer {{staffMumbaiToken}}" }],
+            "url": { "raw": "{{baseUrl}}/api/requests/{{requestId}}/fulfil", "host": ["{{baseUrl}}"], "path": ["api", "requests", "{{requestId}}", "fulfil"] }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status is 403 Forbidden', function () { pm.response.to.have.status(403); });",
+                  "pm.test('Error specifies bank mismatch', function () { pm.expect(pm.response.json().message).to.include('another bank'); });"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "4. Hospital Calling Staff Route Rejection",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{hospToken}}" }],
+            "url": { "raw": "{{baseUrl}}/api/donors", "host": ["{{baseUrl}}"], "path": ["api", "donors"] }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status is 403 Forbidden', function () { pm.response.to.have.status(403); });",
+                  "pm.test('Error indicates insufficient permissions', function () { pm.expect(pm.response.json().message).to.include('Forbidden'); });"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
