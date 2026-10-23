@@ -129,7 +129,7 @@ export default function Donations() {
                 onChange={(e) => setFormData({ ...formData, donorId: e.target.value })}
               >
                 <option value="">-- Choose Donor --</option>
-                {donors &&
+                {Array.isArray(donors) &&
                   donors.map((d) => (
                     <option key={d._id} value={d._id}>
                       {d.name} ({d.bloodGroup}) - {d.address?.city}
@@ -178,9 +178,9 @@ export default function Donations() {
         {loading && <p>Loading donations...</p>}
         {error && <div className="alert alert-error">{error}</div>}
 
-        {donations && donations.length === 0 && <p style={{ marginTop: '1rem' }}>No donations recorded yet.</p>}
+        {Array.isArray(donations) && donations.length === 0 && <p style={{ marginTop: '1rem' }}>No donations recorded yet.</p>}
 
-        {donations && donations.length > 0 && (
+        {Array.isArray(donations) && donations.length > 0 && (
           <div className="table-container">
             <table>
               <thead>

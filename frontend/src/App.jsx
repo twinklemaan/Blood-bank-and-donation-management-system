@@ -4,6 +4,7 @@ import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { AuthProvider, useAuth } from './context/AuthContext';
 import Navbar from './components/Navbar';
 import ProtectedRoute from './components/ProtectedRoute';
+import ErrorBoundary from './components/ErrorBoundary';
 
 import Login from './pages/Login';
 import Register from './pages/Register';
@@ -33,7 +34,8 @@ export default function App() {
         <div className="app-container">
           <Navbar />
           <main className="main-content">
-            <Routes>
+            <ErrorBoundary>
+              <Routes>
               {/* Root Redirect */}
               <Route path="/" element={<RootRedirect />} />
 
@@ -103,7 +105,8 @@ export default function App() {
 
               {/* Catch-all */}
               <Route path="*" element={<Navigate to="/" replace />} />
-            </Routes>
+              </Routes>
+            </ErrorBoundary>
           </main>
         </div>
       </BrowserRouter>

@@ -1,5 +1,6 @@
 // pages/staff/Donors.jsx - Donor Full CRUD & Eligibility Hint (useState, useEffect, useFetch)
 import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
 import { useFetch } from '../../hooks/useFetch';
 
@@ -137,6 +138,14 @@ export default function Donors() {
     <div>
       <div className="page-header">
         <h2>Donor Management (Full CRUD)</h2>
+        <div style={{ display: 'flex', gap: '0.5rem', marginTop: '0.5rem' }}>
+          <Link to="/staff/donations" className="btn btn-primary btn-sm">
+            🩸 Record Donation
+          </Link>
+          <Link to="/staff/stock" className="btn btn-secondary btn-sm">
+            📊 View Live Stock
+          </Link>
+        </div>
       </div>
 
       {formError && <div className="alert alert-error">{formError}</div>}

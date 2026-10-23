@@ -18,7 +18,7 @@ export default function Stock() {
       });
       const data = await res.json();
       if (!res.ok) throw new Error(data.message || 'Failed to fetch stock');
-      setStockList(data);
+      setStockList(Array.isArray(data) ? data : []);
       setLastUpdated(new Date());
     } catch (err) {
       setError(err.message);
@@ -38,14 +38,16 @@ export default function Stock() {
     return () => clearInterval(intervalId); // Cleanup timer on unmount
   }, [token]);
 
-  const totalUnits = stockList.reduce((sum, item) => sum + item.units, 0);
+  const totalUnits = Array.isArray(stockList)
+    ? stockList.reduce((sum, item) => sum + (item.units || 0), 0)
+    : 0;
 
   return (
     <div>
       <div className="page-header">
         <div>
           <h2>Live Blood Bank Stock</h2>
-          <p style="color: #666; font-size: 0.9rem;">
+          <p style={{ color: '#666', fontSize: '0.9rem' }}>
             Bank Inventory for: <strong>{user?.name || 'Your Bank'}</strong>
           </p>
         </div>
@@ -78,7 +80,7 @@ export default function Stock() {
 
       {/* SYLLABUS REQUIREMENT: 8 Blood Groups, highlighted Red when <= 5 units */}
       <div className="stock-grid">
-        {stockList.map((item) => {
+        {Array.isArray(stockList) && stockList.map((item) => {
           const isCritical = item.units <= 5;
           return (
             <div
