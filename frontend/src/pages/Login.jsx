@@ -86,6 +86,6 @@ export default function Login() {
         New hospital? <Link to="/register" style={{ color: 'var(--primary)', fontWeight: 600 }}>Register here</Link>
       </p>
 
-      
+    </div> 
   );
 }
