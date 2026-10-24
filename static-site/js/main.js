@@ -23,7 +23,8 @@ document.addEventListener('DOMContentLoaded', () => {
  * SYLLABUS REQUIREMENT: Never use innerHTML with untrusted/server data to prevent XSS.
  */
 function fetchStockData(container) {
-  const API_URL = 'http://localhost:5000/api/public/stock';
+  // Connects directly to our live cloud backend API on Render:
+  const API_URL = 'https://blood-bank-and-donation-management-system-u257.onrender.com/api/public/stock';
 
   fetch(API_URL)
     .then((response) => {
