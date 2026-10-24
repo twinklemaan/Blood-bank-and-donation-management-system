@@ -86,12 +86,6 @@ export default function Login() {
         New hospital? <Link to="/register" style={{ color: 'var(--primary)', fontWeight: 600 }}>Register here</Link>
       </p>
 
-      <div style={{ marginTop: '1.5rem', background: '#f8f9fa', padding: '0.75rem', borderRadius: '4px', fontSize: '0.8rem' }}>
-        <strong>Demo Credentials:</strong>
-        <div>Staff Pune: <code>staff1</code> / <code>staff123</code></div>
-        <div>Staff Mumbai: <code>staff2</code> / <code>staff123</code></div>
-        <div>Hospital: <code>hosp1</code> / <code>hosp123</code></div>
-      </div>
-    </div>
+      
   );
 }
