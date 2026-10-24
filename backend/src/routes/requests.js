@@ -4,6 +4,7 @@ const { body, validationResult } = require('express-validator');
 const BloodRequest = require('../models/BloodRequest');
 const Donation = require('../models/Donation');
 const User = require('../models/User');
+const Bank = require('../models/Bank');
 const { authenticate, allow } = require('../middleware/auth');
 const rules = require('../rules');
 const appEvents = require('../events');

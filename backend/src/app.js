@@ -3,6 +3,13 @@ const express = require('express');
 const cors = require('cors');
 const path = require('path');
 
+// Ensure all Mongoose models are registered in memory
+require('./models/User');
+require('./models/Bank');
+require('./models/Donor');
+require('./models/Donation');
+require('./models/BloodRequest');
+
 const authRoutes = require('./routes/auth');
 const donorRoutes = require('./routes/donors');
 const donationRoutes = require('./routes/donations');
